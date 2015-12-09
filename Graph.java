@@ -1,32 +1,33 @@
 import java.util.*;
+import java.util.Arrays;
 
 public class Graph
 {
    /* ------------------------------------------
       Data structure used to represent a graph
       ------------------------------------------ */
-   int[][]  adjMatrix;
+   int[][]  copiaMatriz;
    int      rootNode = 0;
-   int      NNodes;
+   int      num_Nodos;
 
-   boolean[] visited; 
+   boolean[] nodos_visitados; 
 
    /* -------------------------------
       Construct a graph of N nodes
       ------------------------------- */
-   Graph(int[][] mat)
+   Graph(int[][] matriz)
    {
       int i, j;
 
-      NNodes = mat.length;
+      num_Nodos = matriz.length;
 
-      adjMatrix = new int[NNodes][NNodes];
-      visited = new boolean[NNodes];
+      copiaMatriz = new int[num_Nodos][num_Nodos];
+      nodos_visitados = new boolean[num_Nodos];
 
 
-      for ( i=0; i < NNodes; i++)
-         for ( j=0; j < NNodes; j++)
-            adjMatrix[i][j] = mat[i][j];
+      for ( i=0; i < num_Nodos; i++)
+         for ( j=0; j < num_Nodos; j++)
+            copiaMatriz[i][j] = matriz[i][j];
    }
 
 
@@ -44,19 +45,18 @@ public class Graph
          =========================================== */
       while( !q.isEmpty() )
       {
-         int nextNode;                // Next node to visit
+         int siguienteNodo;                // Next node to visit
          int i;
 
-         nextNode = q.remove();
-
-         if ( ! visited[nextNode] )
+         siguienteNodo = q.remove();
+         if ( ! nodos_visitados[siguienteNodo] )
          {
-            visited[nextNode] = true;    // Mark node as visited
-            System.out.println("nextNode = " + nextNode );
+            nodos_visitados[siguienteNodo] = true;    // Marca al nodo como visitado
+            System.out.println("Siguiente Nodo = " + siguienteNodo );
 
-            for ( i = 0; i < NNodes; i++ )
-//          for ( i = NNodes-1; i >=0 ; i-- )
-               if ( adjMatrix[nextNode][i] > 0 && ! visited[i] )
+            for ( i = 0; i < num_Nodos; i++ )
+//          for ( i = num_Nodos-1; i >=0 ; i-- )
+               if ( copiaMatriz[siguienteNodo][i] > 0 && ! nodos_visitados[i] )
                   q.add(i);
          }
       }
@@ -67,11 +67,11 @@ public class Graph
    {
       int j;
 
-      for ( j = 0; j < NNodes; j++ )
+      for ( j = 0; j < num_Nodos; j++ )
       {
-	 if ( adjMatrix[n][j] > 0 )
+	 if ( copiaMatriz[n][j] > 0 )
          {
-	    if ( ! visited[j] )
+	    if ( ! nodos_visitados[j] )
                return(j);
          }
       }
@@ -83,8 +83,8 @@ public class Graph
    {
       int i;
 
-      for (i = 0; i < visited.length; i++)
-         visited[i] = false;
+      for (i = 0; i < nodos_visitados.length; i++)
+         nodos_visitados[i] = false;
    }
 
    void printNode(int n)
