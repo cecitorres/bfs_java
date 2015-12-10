@@ -1,41 +1,39 @@
 /**
  * 
- * @author krishna kumar
- * 
- *         This is a basic implementation of BFS for Graph using Adjacency list.
+ * @author Cecilia Torres, Yessica Alvarez
+ *         Ejemplo del recorrido en Primero en Amplitud
  *
  */
 import java.util.Scanner;
 public class Grafo {
-    private int[][] adjacencyMatrix;
-    private int size; // number of nodes in the graph
-    private State[] states;
+    private int[][] matrizBinaria;
+    private int size; // Numero de "ciudades" del grafo
+    private Estados[] estados;
     private Queue queue;
     public Grafo(int size) {
         this.size = size;
-        adjacencyMatrix = new int[size][size];// Initialized with all 0s
-        states = new State[size];
+        matrizBinaria = new int[size][size];// Inicializa con todos en 0
+        estados = new Estados[size];
         for (int i = 0; i < size; i++) {
-            states[i] = State.NEW;
+            estados[i] = Estados.NUEVO;
         }
         queue = new Queue(size);
     }
 
     // Añade las relaciones a la matriz (0 y 1)
-    public void addEdge(int sourceName, int destinationName) {
-        int sourceIndex = sourceName - 1;
-        int destinationIndex = destinationName - 1;
-        adjacencyMatrix[sourceIndex][destinationIndex] = 1;
-        // the graph is non directional so if from S, D is reachable then vice
-        // versa is also true
-        adjacencyMatrix[destinationIndex][sourceIndex] = 1;
+    public void addEdge(int nodoOrigen, int nodoDestino) {
+        int indiceOrigen = nodoOrigen - 1;
+        int indiceDestino = nodoDestino - 1;
+        
+        matrizBinaria[indiceOrigen][indiceDestino] = 1;
+        matrizBinaria[indiceDestino][indiceOrigen] = 1;
     }
 
-    public void traverseGraph() {
-        System.out.println("Using BFS Traversing the graph");
+    public void recorrerGrafo() {
+        System.out.println("Usando algoritmo BFS para recorrer el grafo");
 
         for (int i = 0; i < size; i++) {
-            if (states[i] != State.VISITED) {
+            if (estados[i] != Estados.VISITADO) {
                 bfs(i+1);
             }
         }
@@ -43,24 +41,24 @@ public class Grafo {
 
     private void bfs(int currentNodeName) {
         queue.add(currentNodeName);
-        states[currentNodeName-1] = State.IN_Q;
+        estados[currentNodeName-1] = Estados.EN_COLA;
         while(!queue.isEmpty()){
             int visitedNodeName = queue.remove();
-            states[visitedNodeName-1] = State.VISITED;
+            estados[visitedNodeName-1] = Estados.VISITADO;
             System.out.println(visitedNodeName);
             for(int i = 0; i < size; i++){
-                if(adjacencyMatrix[visitedNodeName-1][i] != 0){
-                    if(states[i] == State.NEW){
+                if(matrizBinaria[visitedNodeName-1][i] != 0){
+                    if(estados[i] == Estados.NUEVO){
                         queue.add((i+1));
-                        states[i] = State.IN_Q;
+                        estados[i] = Estados.EN_COLA;
                     }
                 }
             }
         }
     }
 
-    public enum State {
-        NEW, IN_Q, VISITED
+    public enum Estados {
+        NUEVO, EN_COLA, VISITADO
     };
 
     /**
@@ -118,6 +116,6 @@ public class Grafo {
 
         }
 
-        graph.traverseGraph();
+        graph.recorrerGrafo();
     }
 }
