@@ -45,14 +45,14 @@ public class Grafo {
         queue.add(currentNodeName);
         estados[currentNodeName-1] = Estados.CONOCIDO;
         while(!queue.isEmpty()){
-            int visitedNodeName = queue.remove();
-            estados[visitedNodeName-1] = Estados.VISITADO;
-            System.out.println("Recorrido: " + visitedNodeName);
+            int nodoVisitado = queue.remove();              // Sacamos un nodo de la cola, es el que estamos visitando
+            estados[nodoVisitado-1] = Estados.VISITADO;     // En estados, marcamos a ese nodo como VISITADO
+            System.out.println("Recorrido: " + nodoVisitado);
             for(int i = 0; i < size; i++){
-                if(matrizBinaria[visitedNodeName-1][i] != 0){
-                    if(estados[i] == Estados.SINVISITAR){
+                if(matrizBinaria[nodoVisitado-1][i] != 0){  // Checamos que otros nodos conoce el nodo actual
+                    if(estados[i] == Estados.SINVISITAR){   // Y si no ha sido visitado, lo agregamos a la cola
                         queue.add((i+1));
-                        estados[i] = Estados.CONOCIDO;
+                        estados[i] = Estados.CONOCIDO;      // Y ahora es un nodo conocido
                     }
                 }
                 System.out.println(estados[i]);
