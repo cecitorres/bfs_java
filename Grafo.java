@@ -10,13 +10,15 @@ public class Grafo {
     private int size; // Numero de "ciudades" del grafo
     private Estados[] estados;
     private Queue queue;
-    public Grafo(int size) {
+    public Grafo(int size, int meta) {
         this.size = size;
         matrizBinaria = new int[size][size];// Inicializa con todos en 0
         estados = new Estados[size];
         for (int i = 0; i < size; i++) {
-            estados[i] = Estados.NUEVO;
+            estados[i] = Estados.SINVISITAR;
         }
+
+        // estados[meta] = Estados.META;
         queue = new Queue(size);
     }
 
@@ -41,35 +43,27 @@ public class Grafo {
 
     private void bfs(int currentNodeName) {
         queue.add(currentNodeName);
-        estados[currentNodeName-1] = Estados.EN_COLA;
+        estados[currentNodeName-1] = Estados.CONOCIDO;
         while(!queue.isEmpty()){
             int visitedNodeName = queue.remove();
             estados[visitedNodeName-1] = Estados.VISITADO;
-            System.out.println(visitedNodeName);
+            System.out.println("Recorrido: " + visitedNodeName);
             for(int i = 0; i < size; i++){
                 if(matrizBinaria[visitedNodeName-1][i] != 0){
-                    if(estados[i] == Estados.NUEVO){
+                    if(estados[i] == Estados.SINVISITAR){
                         queue.add((i+1));
-                        estados[i] = Estados.EN_COLA;
+                        estados[i] = Estados.CONOCIDO;
                     }
                 }
+                System.out.println(estados[i]);
             }
         }
     }
 
     public enum Estados {
-        NUEVO, EN_COLA, VISITADO
+        SINVISITAR, CONOCIDO, VISITADO, META
     };
 
-    /**
-     * 
-     * This is a simple queue implemented using array. Although ideally queue
-     * should be implemented in circular style so as to use the empty area when
-     * items are deleted from the front but for BFS implementation we each item
-     * is added only once so if the size of the queue is taken as the size of
-     * the items then there is no need for circular styled implementation.
-     *
-     */
     public class Queue {
         Integer[] queue;
         int maxSize;
@@ -100,8 +94,11 @@ public class Grafo {
 
         System.out.println("Ingrese el número de ciudades ");
         int numCiudades = scan.nextInt();
+
+        System.out.println("Ingrese la ciudad meta");
+        int meta = scan.nextInt();
         
-        Grafo graph = new Grafo(numCiudades);
+        Grafo graph = new Grafo(numCiudades,meta);
 
         System.out.println("Ingrese el número de reglas ");
         int numReglas = scan.nextInt();
